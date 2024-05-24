@@ -6,7 +6,7 @@
 #    By: tpaufert <tpaufert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 23:13:26 by tpaufert          #+#    #+#              #
-#    Updated: 2023/03/09 17:24:11 by tpaufert         ###   ########.fr        #
+#    Updated: 2024/05/24 18:50:35 by hguillau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,9 @@ SRCS    = ft_isalpha.c \
           ft_strnstr.c \
           ft_calloc.c \
           ft_strdup.c \
-          ft_memcmp.c \
           ft_strtrim.c \
           ft_substr.c \
           ft_strjoin.c \
-          ft_strtrim.c \
           ft_split.c \
           ft_itoa.c \
           ft_strmapi.c \
@@ -68,19 +66,40 @@ RM  = rm -f
 
 CFLAGS  = -Wall -Wextra -Werror
 
+NB_SRCS	=	$(words $(SRCS))
+
 all:    ${NAME}
 
+
+
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+	@printf "\033[1mcompiling\033[0m: $<                                 \n"
+	@printf "\033[33m |\033[0;2m"
+	@printf '%*s' $(NB_SRCS) '' | tr ' ' '*' #print one star per file in SRCS
+	@printf "\033[0;1;33m|\033[0m⌛\r\033[2C\033[0;32m"
+	@printf "*" >> .loading_bar
+	@cat .loading_bar 2>/dev/null
+	@printf "\033[0m\033[A\r"
+	@${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+	@sleep 0.05
 
 ${NAME}:	${OBJS}
-		ar rc ${NAME} ${OBJS}
+	@rm -rf .loading_bar
+	@echo ""
+	@printf "\033[33m |\033[32m"
+	@printf "\033[${NB_SRCS}C"
+	@echo "\033[0m\033[C✅ all compiled"
+	@ar rc ${NAME} ${OBJS}
+	@echo "\033[32mlibft compiled\033[0m"
 
 clean:
-	${RM} ${OBJS}
+	@echo "\033[31m removing libft object files\033[0m"
+	@rm -rf .loading_bar
+	@${RM} ${OBJS}
 
 fclean: clean
-	${RM} ${NAME}
+	@echo "\033[1;31m removing libft.a\033[0m"
+	@${RM} ${NAME}
 
 re: fclean all
 
