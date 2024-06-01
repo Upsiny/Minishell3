@@ -6,7 +6,7 @@
 /*   By: hguillau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 10:32:39 by hguillau          #+#    #+#             */
-/*   Updated: 2024/04/24 10:32:43 by hguillau         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:45:21 by hguillau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ char	*search_in_env(t_data *shell, char *var)
 		if (!ft_strcmp(split[0], var))
 		{
             found = 1;
+			if (!split[1])
+			{
+				free_2d_arr(split);
+				return (ft_strdup3(""));
+			}
 			res = ft_strdup3(split[1]);
 			free_2d_arr(split);
             break;

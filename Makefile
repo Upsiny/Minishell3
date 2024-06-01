@@ -6,7 +6,7 @@
 #    By: hguillau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 14:35:37 by hguillau          #+#    #+#              #
-#    Updated: 2024/05/24 18:53:23 by hguillau         ###   ########.fr        #
+#    Updated: 2024/06/01 10:13:07 by hguillau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,8 @@ SRCS    	=	src/main.c							\
 				src/utils/cmd_utils.c				\
 				src/utils/get_in_env.c				\
 				src/lexer_parser/lexer_str.c		\
-#				src/lexer_parser/replace_prompt.c	\
-#				src/lexer_parser/dollar.c			\
+				src/lexer_parser/replace_prompt.c	\
+				src/lexer_parser/dollar.c			\
 #				src/lexer_parser/lexer_alpha.c		\
 #				src/lexer_parser/quotes.c			\
 #				src/expender/expender.c				\#

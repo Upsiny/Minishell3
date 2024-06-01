@@ -6,7 +6,7 @@
 /*   By: hguillau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 10:30:18 by hguillau          #+#    #+#             */
-/*   Updated: 2024/05/24 15:57:41 by hguillau         ###   ########.fr       */
+/*   Updated: 2024/06/01 12:58:57 by hguillau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	dev_dollar(t_data *data, char *value, int pinit, int size)
 		free(val_env);
 		return ;
 	}
-	replace_prompt(val_env);
+	replace_prompt(data, val_env, pinit, size);
 	free(val_env);
 }
 
@@ -142,7 +142,7 @@ void	check_dollar(t_data *data, int pinit, int size) //pinit est la pos du dolla
 	int		i;
 
 	i = 1;
-	value = malloc(sizeof(char) * size);
+	value = malloc(sizeof(char) * size + 1);
 	if (!value)
 	{
 		free(value);
@@ -153,7 +153,7 @@ void	check_dollar(t_data *data, int pinit, int size) //pinit est la pos du dolla
 		value[i - 1] = data->prompt[pinit + i];
 		i++;
 	}
-	value[i] = '\0';
+	value[i - 1] = '\0';
 	dev_dollar(data, value, pinit, size);
 	free(value);
 }
@@ -179,18 +179,17 @@ void	get_dollar(t_data *data, int pos)
 	int	i;
 
 	i = 0;
+	if (!data->prompt[pos + 1])
+		return ;
 	while (data->prompt[pos + i])
 	{
 		i++;
-		if (!ft_isinside(data->prompt[pos + i]
-			&& data->prompt[pos + i - 1] != '$'))
-		{
-			replace_prompt(data,"", i, i); // donner ce qu'il faut pour chaine vide
+		if (!ft_isinside(data->prompt[pos + i])
+			&& data->prompt[pos + i - 1] == '$')
 			return ;
-		}
 		if (!ft_isspace(data->prompt[pos + i])
-			&& !ft_isinside(data->prompt[pos + i]))
+			|| !ft_isinside(data->prompt[pos + i]))
 			break ;
 	}
-	check_dollar(data, pos, i);
+	check_dollar(data, pos, i - 1);
 }

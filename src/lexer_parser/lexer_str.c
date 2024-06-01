@@ -6,7 +6,7 @@
 /*   By: hguillau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:20:16 by hguillau          #+#    #+#             */
-/*   Updated: 2024/05/16 15:25:56 by hguillau         ###   ########.fr       */
+/*   Updated: 2024/06/01 16:20:08 by hguillau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,15 @@ int	work_in_quote(t_data *data, char qtype, int pos)
 	j = pos;
 	i = 0;
 	remove_quote(data, j);
+	if (data->prompt[j] == qtype)
+	{
+		remove_quote(data, j);
+		return (1);
+	}
 	while (data->prompt[j] != qtype)
 	{
-//		if (data->prompt[j] == '$' && data->bdq == 1) // commenter pour les premiers tests
-//			get_dollar(data, j) // refaire le get dollar avec j = pos du dollar
+		if (data->prompt[j] == '$' && data->bdq == 1)// commenter pour les premiers tests
+			get_dollar(data, j); // refaire le get dollar avec j = pos du dollar
 		i++;
 		j++;
 	}
@@ -58,21 +63,17 @@ int	work_in_quote(t_data *data, char qtype, int pos)
 }
 
 // regarde si la quote est fermente
-int	ft_check_endquote(t_data *data, char c)
+int	ft_check_endquote(t_data *data, char c, int pos)
 {
 	int	i;
-	int	j;
 
 	i = 1;
-	j = data->lexer_check;
-	while (data->prompt[j])
+	while (data->prompt[pos])
 	{
 		i++;
-		j++;
-		if (data->prompt[j] == c)
-		{
+		pos++;
+		if (data->prompt[pos] == c)
 			return (i);
-		}
 	}
 	return (0);
 }
@@ -84,7 +85,7 @@ int	get_quote(t_data *data, int pos)
 	char	qtype;
 
 	qtype = data->prompt[pos];
-	if (ft_check_endquote(data, qtype))
+	if (ft_check_endquote(data, qtype, pos))
 	{
 		if (qtype == '\'')
 			data->bsq = 1;
@@ -94,7 +95,7 @@ int	get_quote(t_data *data, int pos)
 		data->bsq = 0;
 		data->bdq = 0;
 		data->lexer_char = data->prompt[data->lexer_check];
-		return (i - 2);
+		return (i - 1);
 	}
 	return (0);
 }
@@ -109,11 +110,15 @@ int	ft_lexer_str(t_data *data)
 	j = data->lexer_check;
 	while (data->prompt && data->prompt[i + j])
 	{
-//		if (data->prompt[i + j] == '$')
-//			get_dollar(data); // refaire get dollar avec en 2eme param, la pos du dollar
-		if (data->prompt[i + j] == '\'' || data->prompt[i + j] == '\"')
+		if (data->prompt[i + j] == '$')
 		{
-			if (ft_check_endquote(data, data->prompt[i + j]))
+			get_dollar(data, i + j);
+			if (data->prompt[i + j])
+				i++;
+		}
+		if (data->prompt[i + j] == '\'' || data->prompt[i + j] == '\"')
+		{ // faire boucler le check tant qu'il y a des quotes a la suite
+			if (ft_check_endquote(data, data->prompt[i + j], i + j))
 				i += get_quote(data, (i + j));
 			else
 			{
@@ -131,5 +136,6 @@ int	ft_lexer_str(t_data *data)
 	while (i--)
 		lexer_advance(data);
 	data->index_lexer++;
+//	printf("prompt = %s\n", data->prompt);
 	return (0);
 }

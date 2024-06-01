@@ -6,7 +6,7 @@
 /*   By: tpaufert <tpaufert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:47:27 by hguillau          #+#    #+#             */
-/*   Updated: 2024/05/16 13:41:13 by hguillau         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:59:24 by hguillau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,18 @@ char	**ft_tabcpy(char **tab);
 void	lexer_advance(t_data *data);
 void	init_lexer(t_data *data);
 int		lexer_work(t_data *data);
-int		ft_lexer_alpha(t_data *data);
-int		ft_lexer_quotes(t_data *data);
-int		ft_check_endquote(t_data *data, char c);
+//int		ft_lexer_alpha(t_data *data);
+//int		ft_lexer_quotes(t_data *data);
+//int		ft_check_endquote(t_data *data, char c);
 int		ft_lexer_redir(t_data *data);
 int		ft_lexer_pipe(t_data *data);
-void	get_dollar(t_data *data);
 void	implement_list(t_data *data, int type, int index, int start);
 int		ft_check_lst(t_data *data);
 void	ft_free_lst(t_data *data);
 void	ft_heredoc(t_list *tmp, t_data *data);
 void	replace_prompt(t_data *data, char *value, int start, int end);
 int		ft_lexer_str(t_data *data); // new lexer alpha
+void	get_dollar(t_data *data, int pos);
 
 //////////// Signaux ////////////////
 

@@ -6,7 +6,7 @@
 /*   By: hguillau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 10:21:51 by hguillau          #+#    #+#             */
-/*   Updated: 2024/05/16 15:26:25 by hguillau         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:51:29 by hguillau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int ac, char **av, char **envp)
 	ft_signaux();
 	while (1)
 	{
-		data->pid = -1;
+		data->pid = -1; 
 		data->prompt = readline("Minishell Lovecraftien (҂◡_◡) > ");
 		add_history(data->prompt);
 		if (!(data->prompt))
@@ -81,12 +81,13 @@ int	main(int ac, char **av, char **envp)
 //				print_list(data);
 				cmd = build_cmd_from_lexer(data);
 				redir_builtins_or_execve(data, cmd);
-				free_list(data->s_lex);
 			}
 		}
+		free_list(data->s_lex);
 		free(data->content_here);
 		free(data->prompt);
 		free(cmd);
+		cmd = NULL;
 //		while (data->cp_env[i] || i == 0){ //debug
 //			printf("env = %s\n ptr = %p\n", data->cp_env[i], data->cp_env[i]);
 //			i++;}
